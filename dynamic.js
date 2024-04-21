@@ -1,15 +1,16 @@
 let inputField = document.getElementById("inputField");
 let form = document.getElementById("myForm");
-let idArray = [];
 var selectElement;
+var fieldId = 0
 let submitBtn = document.getElementById("submit");
 let checkBoxName;
 let showForms = document.getElementById("showForms");
-inputField.addEventListener("click", function (event) {
+
+
+
+inputField.addEventListener("click", function () {
   let inputType = prompt("enter input type", "text");
-
   let div = "";
-
   if (
     inputType === "text" ||
     inputType === "password" ||
@@ -27,16 +28,22 @@ inputField.addEventListener("click", function (event) {
       "enter a valid input type e.g: text,password,email,dropdown,textarea,radio"
     );
   }
+  if (div) {
+    form.insertBefore(div,submitBtn)
+    // form.appendChild(div);
+  }
 
-  form.appendChild(div);
 });
 
 function textInputField(inputType) {
   let div = document.createElement("div");
-  div.classList.add("m-3");
+ 
+  div.classList.add("ms-auto");
+  div.classList.add("my-2");
+
   let input = document.createElement("input");
   input.setAttribute("type", inputType);
-  let inputId = prompt("Enter a valid id for input", "myInput");
+  let inputId = `field${fieldId++}`
   input.setAttribute("id", inputId);
 
   let lbl = createLabel(inputId);
@@ -49,9 +56,10 @@ function textInputField(inputType) {
 
 function dropDownField() {
   let div = document.createElement("div");
-  div.classList.add("m-3");
+  div.classList.add("ms-auto");
+  div.classList.add("my-2");
   selectElement = document.createElement("select");
-  let inputId = prompt("Enter id of dropDown");
+  let inputId = `field${fieldId++}`
   selectElement.setAttribute("id", inputId);
 
   let lbl = createLabel(inputId);
@@ -85,9 +93,10 @@ function getDropDownValue() {
 
 function textAreaField() {
   let div = document.createElement("div");
-  div.classList.add("m-3");
+  div.classList.add("ms-auto");
+  div.classList.add("my-2");
   let textarea = document.createElement("textarea");
-  let inputId = prompt("Enter id of dropDown");
+  let inputId = `field${fieldId++}`
   textarea.setAttribute("id", inputId);
   let lbl = createLabel(inputId);
   textarea.setAttribute("rows", 5);
@@ -104,7 +113,7 @@ function radioBtnField() {
   checkBoxName = prompt("Enter title of your radio buttons");
   let labels = prompt("enter comma separated values of radios buttons");
   div.innerText = `Select ${checkBoxName}: `;
-  let radioId = 0;
+  let radioId = `field${fieldId++}`
   labels = labels.split(",");
   labels.forEach(function (element) {
     let radioInput = document.createElement("input");
@@ -143,10 +152,8 @@ submitBtn.addEventListener("click", function (event) {
   let inputEmail = document.querySelector('input[type="email"]');
   let inputTxtArea = document.querySelector("textarea");
   let selectedDropDown = getDropDownValue();
-  // let obj = {
-  //   gender: genderValue,
-  //   city: selectedCity,
-  // };
+
+
 
   let obj = {};
 
@@ -157,6 +164,7 @@ submitBtn.addEventListener("click", function (event) {
   obj.dropdown = selectedDropDown ? selectedDropDown : "";
   obj.checkBoxVaule = checkBoxName ? checkBoxName : "";
 
+  
   let formArray = [];
   formArray = JSON.parse(localStorage.getItem("formData"));
   if (formArray) {
@@ -168,7 +176,7 @@ submitBtn.addEventListener("click", function (event) {
     localStorage.setItem("formData", JSON.stringify(formArray));
   }
 
-  let html = ``;
+  let html = ` <button id="submit" class="btn btn-primary align-self-center  col-3">Submit</button>`;
   form.innerHTML = html;
   show();
 });
@@ -186,7 +194,7 @@ function show() {
                       <div>password :${element.passwrod} </div>
                       <div>Message :${element.textarea} </div>
                       <div>gender :${element.dropdown} </div>
-                      <div>${checkBoxName} :${element.checkBoxVaule} </div>
+                      <div>country :${element.checkBoxVaule} </div>
                   </div>`;
     });
 
@@ -195,3 +203,7 @@ function show() {
 }
 
 show();
+
+
+
+
